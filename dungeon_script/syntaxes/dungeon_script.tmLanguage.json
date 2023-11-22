@@ -10,11 +10,11 @@
 			"include": "#comments"
 		},
 		{
-			"include": "#strings"
+			"name": "context_hint.dungeon_script",
+			"match": "\\#\\![^\n;]*;?"
 		},
 		{
-			"name": "compare.dungeon_script",
-			"match": "(==|<=|>=|!=|<<|>>)"
+			"include": "#strings"
 		},
 		{
 			"include": "#keywords"
@@ -28,12 +28,16 @@
 			"match": "\\b(true|false|none|not|and|or)\\b"
 		},
 		{
+			"name": "compare.dungeon_script",
+			"match": "(==|<=|>=|!=|<|>)"
+		},
+		{
 			"name": "operator.dungeon_script",
-			"match": "\\b(\\-|\\+|/|\\*|min|max)\\b"
+			"match": "\\b(\\-|\\+|/|\\*|([a-zA-Z_][a-zA-Z0-9_\\.]*(?=\\()))\\b"
 		},
 		{
 			"name": "constant.other.dungeon_script",
-			"match": "\\b(break|return|pass)\\b"
+			"match": "\\b(break|return)\\b"
 		},
 		{
 			"include": "#functions"
@@ -61,7 +65,7 @@
 				},
 				{
 					"name": "control.dungeon_script",
-					"match": "\\b(if|elif|else|break|return|pass)\\b"
+					"match": "\\b(if|elif|else|break|return|for|in|while|pass)\\b"
 				},
 				{
 					"name": "flag.dungeon_script",
@@ -69,15 +73,8 @@
 				},
 				{
 					"name": "globalmarker.dungeon_script",
-					"begin": "<(#)",
-					"end": ">",
-					"patterns": [
-						{
-							"name": "global.dungeon_script",
-							"match": "[^./>]+"
-						}
-					],
-					"beginCaptures": {
+					"match": "<(#[^\n<>]+)>",
+					"captures": {
 						"1": {
 							"name": "global.dungeon_script"
 						}
@@ -85,15 +82,8 @@
 				},
 				{
 					"name": "constmarker.dungeon_script",
-					"begin": "<(%)",
-					"end": ">",
-					"patterns": [
-						{
-							"name": "constant.dungeon_script",
-							"match": "[^./>]+"
-						}
-					],
-					"beginCaptures": {
+					"match": "<(\\%[^\n<>]+)>",
+					"captures": {
 						"1": {
 							"name": "constant.dungeon_script"
 						}
@@ -101,15 +91,8 @@
 				},
 				{
 					"name": "functionmarker.dungeon_script",
-					"begin": "<(\\$)",
-					"end": ">",
-					"patterns": [
-						{
-							"name": "function.dungeon_script",
-							"match": "[^./>]+"
-						}
-					],
-					"beginCaptures": {
+					"match": "<(\\$[^\n<>]+)>",
+					"captures": {
 						"1": {
 							"name": "function.dungeon_script"
 						}
@@ -117,33 +100,27 @@
 				},
 				{
 					"name": "referencemarker.dungeon_script",
-					"begin": "<",
-					"end": ">",
-					"patterns": [
-						{
-							"name": "reference.dungeon_script",
-							"match": "[^./>]+"
+					"match": "<([^\n<>]+)>",
+					"captures": {
+						"1": {
+							"name": "reference.dungeon_script"
 						}
-					]
+					}
 				}
 			]
 		},
 		"strings": {
+			"name": "string.dungeon_script",
+			"begin": "\"",
+			"end": "\"",
 			"patterns": [
 				{
-					"name": "string.dungeon_script",
-					"begin": "(?<![foil])\"",
-					"end": "\"",
-					"patterns": [
-						{
-							"name": "constant.character.escape.dungeon_script",
-							"match": "\\\\."
-						},
-						{
-							"name": "constant.character.escape.dungeon_script",
-							"match": "`[^`]*`"
-						}
-					]
+					"name": "constant.character.escape.dungeon_script",
+					"match": "\\\\."
+				},
+				{
+					"name": "constant.character.escape.dungeon_script",
+					"match": "`[^`]*`"
 				}
 			]
 		},
